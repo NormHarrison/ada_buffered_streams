@@ -65,7 +65,7 @@ procedure BSR_Example is
    Peer_Address : Sock_Addr_Type (Family => Family_Inet);
 
    Reader : BSR.Reader_Type
-     (Buffer_Size     => 300,
+     (Buffer_Size     => 5,
       Recursion_Limit => 5);
 
 begin
@@ -89,6 +89,7 @@ begin
          Data   : constant String := BSR.Read (Reader, Delimiter, Result);
 
       begin
+         Put_Line ("Error: " & BSR.Read_Error_Kind'Image (Result));
          Put_Line ("Received data: """ & Data & """");
       end;
 

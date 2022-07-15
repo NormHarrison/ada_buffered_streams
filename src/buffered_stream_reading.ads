@@ -59,10 +59,13 @@ private
    is limited record
       Stream : access Ada.Streams.Root_Stream_Type'Class;
       --  ! Add a `Connected` component?
+      --  ! Add a `Last_Error` component, to replace the `Error` out
+      --  parameter of `Read` ?
 
-      Buffer     : Ada.Streams.Stream_Element_Array (1 .. Buffer_Size);
-      Last_Index : Ada.Streams.Stream_Element_Offset;
-      --  ! Change name to something that coincides with `Buffer` more?
+      Buffer        : Ada.Streams.Stream_Element_Array (1 .. Buffer_Size);
+      Last_Index    : Ada.Streams.Stream_Element_Offset := 0;
+      --  ! Change name ^ to something that coincides with `Buffer` more?
+      Start_Index   : Ada.Streams.Stream_Element_Offset := 1;
    end record;
 
 end Buffered_Stream_Reading;
