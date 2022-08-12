@@ -1,0 +1,8 @@
+For now, our only custom exception is for indicating when the recursion limit
+was reached. We have removed the declaration of the `Index_Type_Too_Small_Error`
+exception for now, instead opting for allowing the languages automatic checks
+to raise `Constraint_Error` in such cases. However, this could be ambigous to
+the user, not knowing exactly what the problem was.
+
+Continue determining the best way to handle creating stream access instances,
+like making `Reader_Type` descend from `Ada.Finalization.Controlled`.

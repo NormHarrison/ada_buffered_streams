@@ -1,7 +1,4 @@
-with "../buffered_stream_reading.gpr";
-
-
-project BSR_Example is
+library project Buffered_Streams is
 
    type Build_Kind is ("release", "debug");
    Build : Build_Kind := External ("BUILD_KIND", "debug");
@@ -10,9 +7,10 @@ project BSR_Example is
 
    for Source_Dirs use ("src");
    for Object_Dir use "obj/"  & Build;
-   for Exec_Dir use "bin/" & Build;
+   for Library_Dir use "lib/" & Build;
 
-   for Main use ("bsr_example.adb");
+   for Library_Name use "ada_buffered_streams";
+   for Library_Kind use "Static";
 
    Common_Compiler_Switches :=
      ("-gnat2012",
@@ -34,4 +32,4 @@ project BSR_Example is
       for Default_Switches ("Ada") use ("-E");
    end Binder;
 
-end BSR_Example;
+end Buffered_Streams;

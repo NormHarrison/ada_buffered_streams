@@ -4,21 +4,26 @@ with Ada.Streams;
 
 with GNAT.Sockets; use GNAT.Sockets;
 
-with Buffered_Stream_Reading;
+with Buffered_Streams.Unique_Buffer;
 
 
-procedure BSR_Example is
+procedure Buffered_Sockets_Example is
 
-   package Buffered_String_Reading is new Buffered_Stream_Reading
+   --subtype Small_Range is Integer range -20 .. 0;
+
+   --type Byte is range 0 .. 255;
+   --for Byte'Size use 8;
+
+   --type Byte_Array is array (Positive range <>) of Byte;
+
+   package Buffered_Strings is new Buffered_Streams.Unique_Buffer
      (Index_Type   => Positive,
       Element_Type => Character,
       Array_Type   => String,
       "+"          => "+");
 
-   package BSR renames Buffered_String_Reading;
-
    Delimiter : constant Ada.Streams.Stream_Element_Array :=
-     Buffered_String_Reading.To_SEA ("STOP");
+     Buffered_Strings.To_SEA ("STOP");
 
    Server_Address : constant Sock_Addr_Type :=
      (Family => Family_Inet,
@@ -39,16 +44,14 @@ procedure BSR_Example is
 
    begin
       Create_Socket (Socket, Family_Inet, Socket_Stream);
+      Stream := GNAT.Sockets.Stream (Socket);
 
       accept Start;
 
       Connect_Socket (Socket, Server_Address);
 
-      Stream := GNAT.Sockets.Stream (Socket);
-
       String'Write (Stream, "Hello there, test 12345678.STOP");
 
-      Free (Stream);
       Close_Socket (Socket);
 
    exception
@@ -64,9 +67,10 @@ procedure BSR_Example is
 
    Peer_Address : Sock_Addr_Type (Family => Family_Inet);
 
-   Reader : BSR.Reader_Type
-     (Buffer_Size     => 5,
-      Recursion_Limit => 5);
+   Buffered_Socket : Buffered_Strings.Unique_Buffer_Type
+     (Read_Buffer_Size  => 300,
+      Write_Buffer_Size => 50,
+      Recursion_Limit   => 5);
 
 begin
    Create_Socket (Server_Sock, Family_Inet, Socket_Stream);
@@ -81,16 +85,26 @@ begin
          Socket  => Connection_Sock,
          Address => Peer_Address);
 
-      BSR.Set_Stream (Reader, GNAT.Sockets.Stream (Connection_Sock));
-      --  ! Currently lacking a way to free the stream.
+      Buffered_Socket.Set_Stream (GNAT.Sockets.Stream (Connection_Sock));
+      --  ! Stream isn't being freed at the moment.
 
       declare
-         Result :          BSR.Read_Error_Kind;
-         Data   : constant String := BSR.Read (Reader, Delimiter, Result);
+         use type Ada.Exceptions.Exception_ID;
+
+         Error :          Ada.Exceptions.Exception_Occurrence;
+         Data  : constant String := Buffered_Socket.Read_Until
+                                      (Delimiter, Error);
 
       begin
-         Put_Line ("Error: " & BSR.Read_Error_Kind'Image (Result));
-         Put_Line ("Received data: """ & Data & """");
+         if Ada.Exceptions.Exception_Identity (Error) /=
+           Ada.Exceptions.Null_ID
+         then
+            Put_Line (Ada.Exceptions.Exception_Information (Error));
+            exit Forever;
+         else
+            Put_Line ("Received data ->" & Data & "<-");
+            New_Line;
+         end if;
       end;
 
       Close_Socket (Connection_Sock);
@@ -100,4 +114,4 @@ exception
    when Error : others =>
       Put_Line (Ada.Exceptions.Exception_Information (Error));
 
-end BSR_Example;
+end Buffered_Sockets_Example;
