@@ -53,6 +53,7 @@ procedure Buffered_Sockets_Example is
       String'Write (Stream, "Hello there, test 12345678.STOP");
 
       Close_Socket (Socket);
+      Free (Stream);
 
    exception
       when Error : others =>
@@ -86,7 +87,8 @@ begin
          Address => Peer_Address);
 
       Buffered_Socket.Set_Stream (GNAT.Sockets.Stream (Connection_Sock));
-      --  ! Stream isn't being freed at the moment.
+      --  ! Stream isn't being freed at the moment, although in our case
+      --  it doesn't really need to be.
 
       declare
          use type Ada.Exceptions.Exception_ID;
