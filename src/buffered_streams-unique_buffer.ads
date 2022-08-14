@@ -21,7 +21,7 @@ package Buffered_Streams.Unique_Buffer is
    is limited new Root_Buffer_Type
      (Write_Buffer_Size, Read_Buffer_Size) with null record;
 
-   BS_Recursion_Limit_Reached : exception;
+   BS_Recursion_Limit_Error : exception;
    --  Should we have custom exceptions for when element types are too small to
    --  correctly hold SE elements? This would be okay in some situations, but
    --  index types that are too small would always result in `Constraint_Error`

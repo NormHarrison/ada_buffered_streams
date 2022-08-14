@@ -275,7 +275,7 @@ package body Buffered_Streams.Unique_Buffer is
                if Recursion_Count = Self.Recursion_Limit then
                --  We've reached the recursion limit set on this instance of
                --  the `Buffered_Stream_Type`, return all data collected so far.
-                  raise BS_Recursion_Limit_Reached with
+                  raise BS_Recursion_Limit_Error with
                     "Delimiter was not found before recursion limit of"
                       & Positive'Image (Self.Recursion_Limit);
                   --  ! Raising an exception like this prevents us from being

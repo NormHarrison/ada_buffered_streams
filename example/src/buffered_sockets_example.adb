@@ -68,9 +68,9 @@ procedure Buffered_Sockets_Example is
 
    Peer_Address : Sock_Addr_Type (Family => Family_Inet);
 
-   Buffered_Socket : Buffered_Strings.Unique_Buffer_Type
+   Buffered_Socket : aliased Buffered_Strings.Unique_Buffer_Type
      (Read_Buffer_Size  => 300,
-      Write_Buffer_Size => 50,
+      Write_Buffer_Size => 0,
       Recursion_Limit   => 5);
 
 begin
