@@ -1,4 +1,4 @@
-with Ada.Text_IO;                use Ada.Text_IO;
+--with Ada.Text_IO;                use Ada.Text_IO;
 with Ada.Unchecked_Conversion;
 with Ada.IO_Exceptions;
 
@@ -68,30 +68,10 @@ package body Buffered_Streams.Unique_Buffer is
    function To_SEA (Delimiter : in Array_Type)
      return Ada.Streams.Stream_Element_Array
    is
-      -------------------
-      -- Element_To_SE --
-      -------------------
-
---      function Element_To_SE is new Ada.Unchecked_Conversion
---        (Source => Element_Type,
---         Target => Ada.Streams.Stream_Element)
---      with Warnings => Off;
-
       Converted : Ada.Streams.Stream_Element_Array (1 .. Delimiter'Length);
       for Converted'Address use Delimiter'Address;
 
---      Converted_Index : SEO_Type   := Converted'First;
---      Delimiter_Index : Index_Type := Delimiter'First;
-
    begin
---         Converted (Converted_Index) :=
---           Element_To_SE (Delimiter (Delimiter_Index));
---
---         exit when Delimiter_Index = Delimiter'Last;
---
---         Converted_Index := SEO_Type'Succ   (Converted_Index);
---         Delimiter_Index := Index_Type'Succ (Delimiter_Index);
-
       return Converted;
    end To_SEA;
 
@@ -134,19 +114,19 @@ package body Buffered_Streams.Unique_Buffer is
       begin
          Position := -1;
 
-         Put_Line ("Inside `Contains_Delimiter`:"
-           & Character'Val (10)
-           & "`Slice_Start` is"
-           & SEO_Type'Image (Slice_Start)
-           & Character'Val (10)
-           & "`Slice_End` is:"
-           & SEO_Type'Image (Slice_End)
-           & Character'Val (10)
-           & "`Elements'Last` is"
-           & SEO_Type'Image (Elements'Last)
-           & Character'Val (10)
-           & "Elements'First is"
-           & SEO_Type'Image (Elements'First));
+--         Put_Line ("Inside `Contains_Delimiter`:"
+--           & Character'Val (10)
+--           & "`Slice_Start` is"
+--           & SEO_Type'Image (Slice_Start)
+--           & Character'Val (10)
+--           & "`Slice_End` is:"
+--           & SEO_Type'Image (Slice_End)
+--           & Character'Val (10)
+--           & "`Elements'Last` is"
+--           & SEO_Type'Image (Elements'Last)
+--           & Character'Val (10)
+--           & "Elements'First is"
+--           & SEO_Type'Image (Elements'First));
 
          if Delimiter'Length <= Elements'Length then
             Search : loop
@@ -155,7 +135,7 @@ package body Buffered_Streams.Unique_Buffer is
                   Position := Slice_Start;
                   Found    := True;
 
-                  Put_Line ("Delimiter WAS found.");
+--                  Put_Line ("Delimiter WAS found.");
 
                   if Slice_End /= Elements'Last then
                   --  The data that was available for us to consume
@@ -208,29 +188,29 @@ package body Buffered_Streams.Unique_Buffer is
            (Item => Self.Read_Buffer,
             Last => Self.Last_Index_R);
 
-         if Self.Last_Index_R = Self.Read_Buffer'First - 1 then
-            raise Ada.IO_Exceptions.End_Error with
-              "Stream was closed during read attempt.";
-         end if;
-
-         Put_Line ("Inside `Read_Again` at recursion level"
-           & Natural'Image (Recursion_Count));
-
-         Put_Line ("Contents of `Previous_Elements` inside `Read_Again`.");
-         for Index in Previous_Elements'Range loop
-            Put (Ada.Streams.Stream_Element'Image (Previous_Elements (Index)));
-            Put (',');
-         end loop;
-         New_Line;
-
-         Put_Line ("Contents of `Self.Read_Buffer` inside `Read_Again`.");
-         for Index in Self.Read_Buffer
-           (Self.Start_Index_R .. Self.Last_Index_R)'Range
-         loop
-            Put (Ada.Streams.Stream_Element'Image (Self.Read_Buffer (Index)));
-            Put (',');
-         end loop;
-         New_Line;
+--         if Self.Last_Index_R = Self.Read_Buffer'First - 1 then
+--            raise Ada.IO_Exceptions.End_Error with
+--              "Stream was closed during read attempt.";
+--         end if;
+--
+--         Put_Line ("Inside `Read_Again` at recursion level"
+--           & Natural'Image (Recursion_Count));
+--
+--         Put_Line ("Contents of `Previous_Elements` inside `Read_Again`.");
+--         for Index in Previous_Elements'Range loop
+--            Put (Ada.Streams.Stream_Element'Image (Previous_Elements (Index)));
+--            Put (',');
+--         end loop;
+--         New_Line;
+--
+--         Put_Line ("Contents of `Self.Read_Buffer` inside `Read_Again`.");
+--         for Index in Self.Read_Buffer
+--           (Self.Start_Index_R .. Self.Last_Index_R)'Range
+--         loop
+--            Put (Ada.Streams.Stream_Element'Image (Self.Read_Buffer (Index)));
+--            Put (',');
+--         end loop;
+--         New_Line;
 
          --------------------------------
 
@@ -253,16 +233,16 @@ package body Buffered_Streams.Unique_Buffer is
                 (Self.Read_Buffer'First .. Self.Last_Index_R);
 
          begin
-            Put_Line ("Inside `Read_Again`:"
-              & Character'Val (10)
-              & "`Combo_Buffer'First` is"
-              & SEO_Type'Image (Combo_Buffer'First)
-              & Character'Val (10)
-              & "`Efficient_Start` is:"
-              & SEO_Type'Image (Efficient_Start)
-              & Character'Val (10)
-              & "`Combo_Buffer'Last` is"
-              & SEO_Type'Image (Combo_Buffer'Last));
+--            Put_Line ("Inside `Read_Again`:"
+--              & Character'Val (10)
+--              & "`Combo_Buffer'First` is"
+--              & SEO_Type'Image (Combo_Buffer'First)
+--              & Character'Val (10)
+--              & "`Efficient_Start` is:"
+--              & SEO_Type'Image (Efficient_Start)
+--              & Character'Val (10)
+--              & "`Combo_Buffer'Last` is"
+--              & SEO_Type'Image (Combo_Buffer'Last));
 
             if Contains_Delimiter
               (Elements => Combo_Buffer (Efficient_Start .. Combo_Buffer'Last),
@@ -270,7 +250,7 @@ package body Buffered_Streams.Unique_Buffer is
             then
                return Combo_Buffer (Combo_Buffer'First .. Delim_Position - 1);
             else
-               Put_Line ("Delimiter NOT found.");
+--               Put_Line ("Delimiter NOT found.");
 
                if Recursion_Count = Self.Recursion_Limit then
                --  We've reached the recursion limit set on this instance of
@@ -317,8 +297,7 @@ package body Buffered_Streams.Unique_Buffer is
 
          if Self.Read_Buffer'First - 1 = Self.Last_Index_R then
             raise Ada.IO_Exceptions.End_Error with
-              "Stream was closed during read attempt.";
-              --  ! Indicate that it was the first attempt?
+              "Stream was closed during the first read attempt.";
          end if;
       end if;
 
@@ -329,16 +308,16 @@ package body Buffered_Streams.Unique_Buffer is
       then
       --  The delimiter was found on the first read.
 
-         Put_Line ("Inside `Read`:"
-           & Character'Val (10)
-           & "`Self.Buffer'Length` is"
-           & Integer'Image (Self.Read_Buffer'Length)
-           & Character'Val (10)
-           & "`Self.Start_Index_R` is:"
-           & SEO_Type'Image (Self.Start_Index_R)
-           & Character'Val (10)
-           & "`Delim_Position - 1` is"
-           & SEO_Type'Image (Delim_Position - 1));
+--         Put_Line ("Inside `Read`:"
+--           & Character'Val (10)
+--           & "`Self.Buffer'Length` is"
+--           & Integer'Image (Self.Read_Buffer'Length)
+--           & Character'Val (10)
+--           & "`Self.Start_Index_R` is:"
+--           & SEO_Type'Image (Self.Start_Index_R)
+--           & Character'Val (10)
+--           & "`Delim_Position - 1` is"
+--           & SEO_Type'Image (Delim_Position - 1));
 
       --if Index_Type'Base'Last < Elements'Length then
       --  ! Was our idea here to try and raise an exception if the data type
@@ -352,7 +331,7 @@ package body Buffered_Streams.Unique_Buffer is
       else
       --  More data is needed, the delimiter was not found.
 
-         Put_Line ("Delimiter NOT found, continuing to read.");
+--         Put_Line ("Delimiter NOT found, continuing to read.");
 
          declare
             subtype Slice_Range is SEO_Type range
