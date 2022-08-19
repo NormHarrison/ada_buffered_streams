@@ -15,7 +15,7 @@ package Buffered_Streams.Socket_Streamer is
 
    type TCP_Stream_Type is tagged limited private;
 
-   procedure Create_Stream
+   procedure Initialize
      (Stream : in out TCP_Stream_Type;
       Socket : in     GNAT.Sockets.Socket_Type);
 
@@ -30,7 +30,7 @@ package Buffered_Streams.Socket_Streamer is
    type UDP_Stream_Type (Address_Family : GNAT.Sockets.Family_Type) is
      new TCP_Stream_Type with private;
 
-   procedure Create_Stream
+   procedure Initialize
      (Stream     : in out UDP_Stream_Type;
       Socket     : in     GNAT.Sockets.Socket_Type;
       To_Address : in     GNAT.Sockets.Sock_Addr_Type);

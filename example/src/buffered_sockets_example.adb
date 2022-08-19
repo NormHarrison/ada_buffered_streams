@@ -88,8 +88,8 @@ begin
          Socket  => Connection_Sock,
          Address => Peer_Address);
 
-      Connection_Stream.Create_Stream (Connection_Sock);
-      Buffered_Socket.Set_Stream      (Connection_Stream.To_Access);
+      Connection_Stream.Initialize (Connection_Sock);
+      Buffered_Socket.Set_Stream   (Connection_Stream.To_Access);
 
       declare
          use type Ada.Exceptions.Exception_ID;

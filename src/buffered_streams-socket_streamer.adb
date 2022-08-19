@@ -1,20 +1,20 @@
 package body Buffered_Streams.Socket_Streamer is
 
-   -------------------
-   -- Create_Stream --
-   -------------------
+   ----------------
+   -- Initialize --
+   ----------------
 
-   procedure Create_Stream
+   procedure Initialize
      (Stream : in out TCP_Stream_Type;
       Socket : in     GNAT.Sockets.Socket_Type)
    is
    begin
       Stream.Socket := Socket;
-   end Create_Stream;
+   end Initialize;
 
    ---------------
 
-   procedure Create_Stream
+   procedure Initialize
      (Stream     : in out UDP_Stream_Type;
       Socket     : in     GNAT.Sockets.Socket_Type;
       To_Address : in     GNAT.Sockets.Sock_Addr_Type)
@@ -22,7 +22,7 @@ package body Buffered_Streams.Socket_Streamer is
    begin
       Stream.To_Address := To_Address;
       Stream.Socket     := Socket;
-   end Create_Stream;
+   end Initialize;
 
    ---------------
    -- To_Socket --
