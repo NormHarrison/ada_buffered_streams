@@ -1,5 +1,12 @@
 # TODO:
 
+- In the `Socket_Streamer` package we could rather greatly decrease the amount
+of source code inside the package body if we declared both `To_Address` and
+`From_Address` inside the base `TCP_Stream_Type`. This would allow us to only
+need one overload of the `Root_Stream_Type`'s `Read` and `Write` primitives.
+Howver, this means that the `TCP_Stream_Type` would have a discriminant even
+though it wouldn't actually be used.
+
 - Could we gain any efficiency by performing copies using identical slices
 instead of copying element by element in a loop?
 

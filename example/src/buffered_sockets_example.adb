@@ -5,6 +5,7 @@ with Ada.Streams;
 with GNAT.Sockets; use GNAT.Sockets;
 
 with Buffered_Streams.Unique_Buffer;
+with Buffered_Streams.Socket_Streamer;
 
 
 procedure Buffered_Sockets_Example is
@@ -63,8 +64,9 @@ procedure Buffered_Sockets_Example is
 
 --  Start of main procedure.
 
-   Server_Sock     : Socket_Type;
-   Connection_Sock : Socket_Type;
+   Server_Sock       : Socket_Type;
+   Connection_Sock   : Socket_Type;
+   Connection_Stream : Buffered_Streams.Socket_Streamer.TCP_Stream_Type;
 
    Peer_Address : Sock_Addr_Type (Family => Family_Inet);
 
@@ -75,7 +77,7 @@ procedure Buffered_Sockets_Example is
 
 begin
    Create_Socket (Server_Sock, Family_Inet, Socket_Stream);
-   Bind_Socket (Server_Sock, Server_Address);
+   Bind_Socket   (Server_Sock, Server_Address);
    Listen_Socket (Server_Sock);
 
    Socket_Client_Task.Start;
@@ -86,9 +88,8 @@ begin
          Socket  => Connection_Sock,
          Address => Peer_Address);
 
-      Buffered_Socket.Set_Stream (GNAT.Sockets.Stream (Connection_Sock));
-      --  ! Stream isn't being freed at the moment, although in our case
-      --  it doesn't really need to be.
+      Connection_Stream.Create_Stream (Connection_Sock);
+      Buffered_Socket.Set_Stream      (Connection_Stream.To_Access);
 
       declare
          use type Ada.Exceptions.Exception_ID;
