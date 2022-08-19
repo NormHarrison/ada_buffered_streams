@@ -17,13 +17,13 @@ package Buffered_Streams.Socket_Streamer is
 
    procedure Initialize
      (Stream : in out TCP_Stream_Type;
-      Socket : in     GNAT.Sockets.Socket_Type);
+      Socket : in     GNAT.Sockets.Socket_Type) with Inline;
 
    function To_Socket (Stream : in TCP_Stream_Type)
-     return GNAT.Sockets.Socket_Type;
+     return GNAT.Sockets.Socket_Type with Inline;
 
    function To_Access (Stream : in out TCP_Stream_Type)
-     return GNAT.Sockets.Stream_Access;
+     return GNAT.Sockets.Stream_Access with Inline;
 
    --  ! Consider making these types non-limited.
 
@@ -33,14 +33,14 @@ package Buffered_Streams.Socket_Streamer is
    procedure Initialize
      (Stream     : in out UDP_Stream_Type;
       Socket     : in     GNAT.Sockets.Socket_Type;
-      To_Address : in     GNAT.Sockets.Sock_Addr_Type);
+      To_Address : in     GNAT.Sockets.Sock_Addr_Type) with Inline;
 
    function Get_Last_From_Address (Stream : in UDP_Stream_Type)
-     return GNAT.Sockets.Sock_Addr_Type;
+     return GNAT.Sockets.Sock_Addr_Type with Inline;
 
    procedure Set_To_Address
      (Stream     : in out UDP_Stream_Type;
-      To_Address : in     GNAT.Sockets.Sock_Addr_Type);
+      To_Address : in     GNAT.Sockets.Sock_Addr_Type) with Inline;
 
 private
 
