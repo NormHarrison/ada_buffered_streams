@@ -271,7 +271,7 @@ package body Buffered_Streams.Unique_Buffer is
          end;
       end Read_Again;
 
-   --  Start of `Read`.
+   --  Start of `Read_Until`.
 
       Null_User_Array : Array_Type (Index_Type'Last .. Index_Type'First)
         with Warnings => Off;
@@ -287,6 +287,10 @@ package body Buffered_Streams.Unique_Buffer is
       --  without the need for recursive invocations (i.e. on the first read).
 
    begin
+      Ada.Exceptions.Save_Occurrence
+        (Source => Ada.Exceptions.Null_Occurrence,
+         Target => Error);
+
       if Self.Start_Index_R = Self.Read_Buffer'First then
       --  Only read more data from the stream right away if the last read
       --  was "clean" and didn't result in more data after the delimiter.

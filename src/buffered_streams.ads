@@ -39,7 +39,7 @@ package Buffered_Streams is
    --  write buffer is full, its contents is flushed to the underlying stream
    --  automatically. Manual control of flushing can be obtained via `Flush`.
 
-   procedure Flush (Self : in out Root_Buffer_Type);
+   procedure Flush (Self : in out Root_Buffer_Type) with Inline;
    --  Forcefully flush the current contents of the write buffer to the
    --  underlying stream.
    --  ! Return a `Boolean` or `Ada.Exceptions.Exception_Occurrence`?

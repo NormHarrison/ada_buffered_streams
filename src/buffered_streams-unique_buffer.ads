@@ -46,7 +46,7 @@ package Buffered_Streams.Unique_Buffer is
    --  being raised.
 
    function To_SEA (Delimiter : in Array_Type)
-     return Ada.Streams.Stream_Element_Array;
+     return Ada.Streams.Stream_Element_Array with Inline;
    --  Convenience function for converting the type provided for `Arary_Type`
    --  into Ada stream elements, primarily for when using a string type as the
    --  `Array_Type` (to avoid having to manually type out the raw character
@@ -67,6 +67,9 @@ package Buffered_Streams.Unique_Buffer is
    --  passed back via the `Error` out parameter as an
    --  `Ada.Exceptions.Exception_Occurrence` instance, which can then be
    --  dealt with as needed in user-provided code.
+
+   --  ! Warn of the exception(s?) that can't be caught when using `select`.
+
    --  ! A rule that we will probably have is that `Reader.Buffer_Size` must
    --  always >= than `Delimiter'Length`. We could formally enforce this with
    --  a predcondition.
